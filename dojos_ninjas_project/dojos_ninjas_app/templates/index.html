@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+    <title>Document</title>
+</head>
+<body>
+    <div id="header" style="background-color:antiquewhite; border: inset">
+        <div>
+            <h1>Add a Dojo </h1>
+            <form action="/dojos_route" method='post' class="forms">
+                {% csrf_token %}
+                <label for="">Name:</label>
+                <input type="text" name="name">
+                <label for="">City:</label>
+                <input type="text" name="city">
+                <label for="">State:</label>
+                <input type="text" name="state">
+                <button class="buttons btn btn-primary">Add</button>
+            </form>
+        </div>
+        
+        <div>
+            <h1> Add a Ninja</h1>
+            <form action="/ninjas_route"   method='post' class="forms">
+                {% csrf_token %}
+                <label for="">First Name:</label>
+                <input type="text" name="first_name">
+                <label for="">Last Name:</label>
+                <input type="text" name="last_name">
+                <label for="">Dojo:</label>
+                <select name="all_dojos" id="">
+                    {% for d in all_dojos%}
+                    <option value="{{d.id}}">{{d.name}}</option>
+                    {% endfor %}
+                </select>
+                <button class="buttons1 btn btn-primary">Add</button>
+            </form>
+        </div>
+    </div>
+    
+    
+
+    <div class=sub-container style="background-color:antiquewhite; margin: 50px">
+        <h1 style="margin: 10px">All The Dojos</h1>
+        <br>
+    <ul style="display: flex; flex-direction: column;">{% for d in all_dojos %}
+        <li><button>{{d.name}}</button> - <b>location</b>-{{d.state}}/{{d.city}}
+        
+                <button style="" class="btn btn-danger"><a href="/destroy_dojos/{{d.id}}" style="text-decoration: none; color: black">Delete</a></button>
+                
+
+        <ul> 
+            {% for ninja in  d.ninjas.all%}
+                <li><em>{{ninja.first_name}}</em></li>
+            {% endfor %}
+        </ul>
+    </li>
+    <p><b>Members</b> {{d.ninjas.count}}</p>
+    {% endfor %}
+    </ul>
+    <!-- <table style="border: solid 5px black">
+        <thead>
+        <tr>
+            <th>Dojo</th>
+            <th>Students</th>
+            <th>Members</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for d in all_dojos %}
+        {% for ninja in  d.ninjas.all%}
+        <tr>
+            <td>{{d.name}} - <b>location</b>-{{d.state}}/{{d.city}}</td>
+            <td><ul>
+                <li>
+                    {{ninja.first_name}}
+                </li>
+            </ul></td>
+            
+            <td>{{d.ninjas.count}}</td>
+        </tr>
+        </tbody>
+        {% endfor %}
+        {% endfor %}
+    </table> -->
+    </div>
+    <div>
+    </div>
+</body>
+</html>
